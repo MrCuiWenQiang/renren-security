@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.sys.entity.CommunityBuildingEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,9 @@ import java.util.Map;
 public interface CommunityBuildingService extends IService<CommunityBuildingEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils queryCountPage(Map<String, Object> params);
+
+     List<CommunityBuildingEntity> queryListByComId(int id);
 }
 

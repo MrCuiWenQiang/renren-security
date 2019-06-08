@@ -2,7 +2,11 @@ package io.renren.modules.sys.dao;
 
 import io.renren.modules.sys.entity.BuildingRoomEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.renren.modules.sys.entity.BuildingRoomListEntity;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 单元房间号
@@ -13,5 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BuildingRoomDao extends BaseMapper<BuildingRoomEntity> {
-	
+    List<BuildingRoomListEntity> queryComList(Map<String, Object> params);
 }

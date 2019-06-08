@@ -2,10 +2,11 @@ $(function () {
     $("#jqGrid").jqGrid({
         url: baseURL + 'sys/unitcommunity/list',
         datatype: "json",
-        colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '', name: 'userId', index: 'user_id', width: 80 }, 			
-			{ label: '小区名', name: 'name', index: 'name', width: 80 }			
+        colModel: [
+            { label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden:true},
+			{ label: '小区名', name: 'name', index: 'name', width: 120 },
+            { label: '楼幢总数', name: 'buildingCount', index: 'building_count', width: 80 },
+            { label: '房间总数', name: 'roomCount', index: 'room_count', width: 80 }
         ],
 		viewrecords: true,
         height: 385,

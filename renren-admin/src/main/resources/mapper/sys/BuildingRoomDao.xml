@@ -3,13 +3,51 @@
 
 <mapper namespace="io.renren.modules.sys.dao.BuildingRoomDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="io.renren.modules.sys.entity.BuildingRoomEntity" id="buildingRoomMap">
         <result property="id" column="id"/>
         <result property="cell" column="cell"/>
         <result property="room" column="room"/>
         <result property="buildingId" column="building_id"/>
+        <result property="bindUserId" column="bind_user_id"/>
+    </resultMap>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.sys.entity.BuildingRoomListEntity" id="queryComListMap">
+        <result property="id" column="id"/>
+        <result property="cell" column="cell"/>
+        <result property="room" column="room"/>
+        <result property="buildingId" column="building_id"/>
+        <result property="bindUserId" column="bind_user_id"/>
+        <result property="bindUserName" column="bind_user_name"/>
+        <result property="bindStatus" column="is_bind"/>
+        <result property="totalCount" column="total_count"/>
+        <result property="comName" column="com_name"/>
+        <result property="buildingNo" column="building_no"/>
     </resultMap>
 
-
+    <select id="queryComList" resultMap="queryComListMap" parameterType="java.util.Map">
+  SELECT
+	c.NAME AS com_name,
+	b.NO AS building_no,
+	r.*,
+	(
+	SELECT
+		COUNT( id )
+	FROM
+		tb_building_room r
+	WHERE
+		r.building_id IN ( SELECT id FROM tb_community_building WHERE community_id IN ( SELECT id FROM tb_unit_community WHERE user_id = #{userid} ) )
+	) AS total_count,
+IF
+	( bind_user_id >= 0, '已绑定', '未绑定' ) AS is_bind,
+IF
+	( bind_user_id >= 0, ( SELECT username FROM sys_user WHERE user_id = r.bind_user_id ), NULL ) AS bind_user_name
+FROM
+	tb_building_room r
+	LEFT JOIN tb_community_building b ON b.id = r.building_id
+	LEFT JOIN tb_unit_community c ON c.id = b.community_id
+WHERE
+	r.building_id IN ( SELECT id FROM tb_community_building WHERE community_id IN ( SELECT id FROM tb_unit_community WHERE user_id = #{userid} ) )
+ LIMIT ${offset} , ${limit}
+</select>
 </mapper>

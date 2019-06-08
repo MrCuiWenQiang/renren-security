@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
  * @author Mark sunlightcs@gmail.com
  */
 public abstract class AbstractController {
+	public final String USER_ID_KEY = "userid";
+
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
 	protected SysUserEntity getUser() {

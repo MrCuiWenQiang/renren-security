@@ -5,18 +5,16 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * 单元房间号
+ * 小区号
  * 
  * @author Mark
  * @email sunlightcs@gmail.com
  * @date 2019-06-05 01:55:52
  */
 @Data
-@TableName("tb_building_room")
-public class BuildingRoomEntity implements Serializable {
+public class UnitCommunityListEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -25,19 +23,24 @@ public class BuildingRoomEntity implements Serializable {
 	@TableId
 	private Integer id;
 	/**
-	 * 单元室
+	 * 
 	 */
-	private String cell;
+	private Long userId;
 	/**
-	 * 房号
+	 * 小区名
 	 */
-	private String room;
+	private String name;
 	/**
-	 * 楼号id
+	 * 房间个数
 	 */
-	private Integer buildingId;
+	private Integer roomCount;
 	/**
-	 * 绑定的用户Id
- 	 */
-	private Long bindUserId;
+	 * 楼层个数
+	 */
+	private Integer buildingCount;
+
+	/**
+	 * 总记录数
+	 */
+	private int totalCount;
 }

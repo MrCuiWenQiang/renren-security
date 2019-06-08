@@ -1,6 +1,7 @@
 package io.renren.modules.sys.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import io.renren.common.validator.ValidatorUtils;
@@ -28,7 +29,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("sys/communitybuilding")
-public class CommunityBuildingController {
+public class CommunityBuildingController extends AbstractController{
     @Autowired
     private CommunityBuildingService communityBuildingService;
 
@@ -38,7 +39,8 @@ public class CommunityBuildingController {
     @RequestMapping("/list")
     @RequiresPermissions("sys:communitybuilding:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = communityBuildingService.queryPage(params);
+        params.put(USER_ID_KEY,getUserId());
+        PageUtils page = communityBuildingService.queryCountPage(params);
 
         return R.ok().put("page", page);
     }
@@ -55,6 +57,13 @@ public class CommunityBuildingController {
         return R.ok().put("communityBuilding", communityBuilding);
     }
 
+    @RequestMapping("/query/{id}")
+    @RequiresPermissions("sys:communitybuilding:info")
+    public R query(@PathVariable("id") Integer id){
+        List<CommunityBuildingEntity> data = communityBuildingService.queryListByComId(id);
+
+        return R.ok().put("list", data);
+    }
     /**
      * 保存
      */

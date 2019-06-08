@@ -3,12 +3,33 @@
 
 <mapper namespace="io.renren.modules.sys.dao.CommunityBuildingDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="io.renren.modules.sys.entity.CommunityBuildingEntity" id="communityBuildingMap">
         <result property="id" column="id"/>
         <result property="no" column="no"/>
         <result property="communityId" column="community_id"/>
+        <result property="totalCount" column="total_count"/>
     </resultMap>
 
+    <resultMap id="buildingcount_map" type="io.renren.modules.sys.entity.CommunityBuildingListEntity">
+        <result property="id" column="id"/>
+        <result property="no" column="no"/>
+        <result property="communityName" column="community_name"/>
+        <result property="totalCount" column="total_count"/>
+        <result property="roomCount" column="room_count"/>
+    </resultMap>
 
+    <select id="queryComList" resultMap="buildingcount_map" parameterType="java.util.Map">
+     SELECT
+	*,
+	( SELECT c.name FROM tb_unit_community c WHERE c.id = b.community_id ) AS community_name,
+	(SELECT COUNT(id) FROM tb_community_building b
+WHERE
+	b.community_id IN ( SELECT id FROM tb_unit_community WHERE user_id = #{userid} )) AS total_count,
+	(SELECT COUNT(id) FROM tb_building_room WHERE building_id = b.id) AS room_count
+FROM
+	tb_community_building b
+WHERE
+	b.community_id IN ( SELECT id FROM tb_unit_community WHERE user_id = #{userid} ) LIMIT ${offset} , ${limit}
+    </select>
 </mapper>

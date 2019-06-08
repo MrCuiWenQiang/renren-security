@@ -28,7 +28,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("sys/buildingroom")
-public class BuildingRoomController {
+public class BuildingRoomController extends AbstractController{
     @Autowired
     private BuildingRoomService buildingRoomService;
 
@@ -38,8 +38,8 @@ public class BuildingRoomController {
     @RequestMapping("/list")
     @RequiresPermissions("sys:buildingroom:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = buildingRoomService.queryPage(params);
-
+        params.put(USER_ID_KEY,getUserId());
+        PageUtils page = buildingRoomService.queryCountPage(params);
         return R.ok().put("page", page);
     }
 

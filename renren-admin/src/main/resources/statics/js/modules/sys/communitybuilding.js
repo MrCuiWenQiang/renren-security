@@ -2,10 +2,11 @@ $(function () {
     $("#jqGrid").jqGrid({
         url: baseURL + 'sys/communitybuilding/list',
         datatype: "json",
-        colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '楼号', name: 'no', index: 'no', width: 80 }, 			
-			{ label: '小区id', name: 'communityId', index: 'community_id', width: 80 }			
+        colModel: [
+            { label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden:true},
+			{ label: '楼号', name: 'no', index: 'no', width: 120 ,sortable: false},
+			{ label: '所属小区', name: 'communityName', index: 'community_name', width: 80, sortable: false},
+			{ label: '房间数目', name: 'roomCount', index: 'room_count', width: 80, sortable: false}
         ],
 		viewrecords: true,
         height: 385,
@@ -33,12 +34,27 @@ $(function () {
         }
     });
 });
+var com_ztree;
+
+var com_setting={
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+        }
+       
+    }
+}
 
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
 		showList: true,
 		title: null,
+		come:{
+			id:null,
+			name:null
+		},
 		communityBuilding: {}
 	},
 	methods: {
@@ -49,6 +65,7 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.communityBuilding = {};
+			vm.queryAllCom();
 		},
 		update: function (event) {
 			var id = getSelectedRow();
@@ -113,6 +130,39 @@ var vm = new Vue({
 			$("#jqGrid").jqGrid('setGridParam',{ 
                 page:page
             }).trigger("reloadGrid");
-		}
+		},
+        queryAllCom:function () {
+			$.get(baseURL+"sys/unitcommunity/all",function (data) {
+					if (data == null){
+                        alert('未查询小区,请先添加小区', function(){
+                        });
+					}else {
+                        com_ztree =$.fn.zTree.init($("#deptTree"), com_setting, data);
+                        com_ztree.expandAll(true);
+					}
+            })
+
+        },
+		showComDialog:function () {
+            layer.open({
+                type: 1,
+                offset: '50px',
+                skin: 'layui-layer-molv',
+                title: "选择小区",
+                area: ['300px', '450px'],
+                shade: 0,
+                shadeClose: false,
+                content: jQuery("#deptLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var node = com_ztree.getSelectedNodes();
+                    //选择上级部门
+                    vm.communityBuilding.communityId = node[0].id;
+                    vm.come.name = node[0].name;
+
+                    layer.close(index);
+                }
+            });
+        }
 	}
 });

@@ -1,6 +1,7 @@
 package io.renren.modules.sys.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import io.renren.common.validator.ValidatorUtils;
@@ -38,11 +39,20 @@ public class UnitCommunityController extends AbstractController{
     @RequestMapping("/list")
     @RequiresPermissions("sys:unitcommunity:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = unitCommunityService.queryPage(params);
+        params.put(USER_ID_KEY,getUserId());
+        PageUtils page = unitCommunityService.queryCountPage(params);
 
         return R.ok().put("page", page);
     }
 
+    /**
+     * 获取用户下全部小区
+     * @return
+     */
+    @RequestMapping("/all")
+    public List<UnitCommunityEntity> all(){
+        return unitCommunityService.quaryAll(getUserId());
+    }
 
     /**
      * 信息

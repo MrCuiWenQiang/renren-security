@@ -73,6 +73,10 @@ public class SysUserEntity implements Serializable {
 	 * 状态  0：禁用   1：正常
 	 */
 	private Integer status;
+	/**
+	 * 状态  0：普通用户   1：管理员
+	 */
+	private Integer type;
 	
 	/**
 	 * 角色ID列表

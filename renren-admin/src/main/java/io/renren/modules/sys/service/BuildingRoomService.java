@@ -16,5 +16,7 @@ import java.util.Map;
 public interface BuildingRoomService extends IService<BuildingRoomEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils queryCountPage(Map<String, Object> params);
 }
 

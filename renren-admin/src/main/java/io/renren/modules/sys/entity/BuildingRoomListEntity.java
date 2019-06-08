@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 单元房间号
@@ -15,14 +14,12 @@ import java.util.Date;
  * @date 2019-06-05 01:55:52
  */
 @Data
-@TableName("tb_building_room")
-public class BuildingRoomEntity implements Serializable {
+public class BuildingRoomListEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
 	 */
-	@TableId
 	private Integer id;
 	/**
 	 * 单元室
@@ -35,9 +32,34 @@ public class BuildingRoomEntity implements Serializable {
 	/**
 	 * 楼号id
 	 */
-	private Integer buildingId;
+	private int buildingId;
+
+	private boolean isBind;//用户是否微信绑定
+
+	/**
+	 * 总记录数
+	 */
+	private int totalCount;
+
 	/**
 	 * 绑定的用户Id
- 	 */
-	private Long bindUserId;
+	 */
+	private long bindUserId;
+	/**
+	 * 绑定状态
+	 */
+	private String bindStatus;
+
+	/**
+	 * 绑定的用户名称
+	 */
+	private String bindUserName;
+	/**
+	 * 小区名
+	 */
+	private String comName;
+	/**
+	 * 楼号
+	 */
+	private String buildingNo;
 }
