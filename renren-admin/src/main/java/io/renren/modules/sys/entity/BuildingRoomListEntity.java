@@ -62,4 +62,6 @@ public class BuildingRoomListEntity implements Serializable {
 	 * 楼号
 	 */
 	private String buildingNo;
+
+
 }

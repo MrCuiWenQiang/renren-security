@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.RechargeRecordDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.sys.entity.RechargeRecordEntity" id="rechargeRecordMap">
+        <result property="id" column="id"/>
+        <result property="waterNo" column="water_no"/>
+        <result property="rechargeUserId" column="recharge_user_id"/>
+        <result property="money" column="money"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap type="io.renren.modules.sys.entity.RechargeRecordListEntity" id="queryComListMap">
+        <result property="id" column="id"/>
+        <result property="waterNo" column="water_no"/>
+        <result property="rechargeUserId" column="recharge_user_id"/>
+        <result property="money" column="money"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+
+        <result property="rechargeUserName" column="recharge_username"/>
+        <result property="typeName" column="type_name"/>
+        <result property="statusName" column="status_Name"/>
+        <result property="totalCount" column="total_count"/>
+
+    </resultMap>
+
+    <select id="queryComList" resultMap="queryComListMap" parameterType="java.util.Map">
+SELECT
+	r.*,
+	u.username AS recharge_username,
+	(select COUNT(id) FROM tb_recharge_record) as total_count,
+	( CASE r.type WHEN 1 THEN '平台充值' WHEN 2 THEN '微信充值' ELSE '未知' END ) AS type_name,
+IF
+	( r.STATUS = 0, '支付成功', '支付失败' ) AS status_Name
+FROM
+	tb_recharge_record r
+	LEFT JOIN sys_user u ON u.user_id = r.recharge_user_id ORDER BY create_time desc LIMIT ${offset} , ${limit}
+    </select>
+
+
+</mapper>

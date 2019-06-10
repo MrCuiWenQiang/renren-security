@@ -8,6 +8,7 @@ $(function () {
             {label: '楼幢', name: 'buildingNo', index: 'building_no', width: 40, sortable: false},
             {label: '单元室', name: 'cell', index: 'cell', width: 40, sortable: false},
             {label: '房号', name: 'room', index: 'room', width: 40, sortable: false},
+            {label: '给水号', name: 'waterNo', index: 'waterNo', width: 40, sortable: false},
             {label: '用户是否绑定', name: 'bindStatus', index: 'bind_status', width: 40, sortable: false},
             {label: '所属用户名', name: 'bindUserName', index: 'bindUser_name', width: 40, sortable: false}
         ],

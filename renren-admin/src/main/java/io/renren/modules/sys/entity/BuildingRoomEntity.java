@@ -40,4 +40,5 @@ public class BuildingRoomEntity implements Serializable {
 	 * 绑定的用户Id
  	 */
 	private Long bindUserId;
+
 }
