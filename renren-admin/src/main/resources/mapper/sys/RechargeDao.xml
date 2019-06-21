@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.RechargeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.sys.entity.RechargeEntity" id="rechargeMap">
+        <result property="id" column="id"/>
+        <result property="waterNo" column="water_no"/>
+        <result property="roomId" column="room_id"/>
+        <result property="money" column="money"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap type="io.renren.modules.sys.entity.RechargeListEntity" id="listMap">
+        <result property="id" column="id"/>
+        <result property="waterNo" column="water_no"/>
+        <result property="roomId" column="room_id"/>
+        <result property="money" column="money"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="comName" column="com_name"/>
+        <result property="buildingNo" column="building_no"/>
+        <result property="cell" column="cell"/>
+        <result property="room" column="room"/>
+        <result property="totalCount" column="total_count"/>
+    </resultMap>
+
+
+    <select id="queryComList" resultMap="listMap"  parameterType="java.util.Map">
+        SELECT
+	re.*,
+	r.cell,
+	r.room,
+	b.NO AS  building_no,
+	c.NAME AS com_name,
+	(
+	SELECT
+		count( * )
+	FROM
+		tb_recharge re
+		LEFT JOIN tb_building_room r ON re.room_id = r.id
+		LEFT JOIN tb_community_building b ON r.building_id = b.id
+		LEFT JOIN tb_unit_community c ON b.community_id = c.id
+		LEFT JOIN sys_user u ON u.user_id = c.user_id
+	WHERE
+		u.user_id = #{userid}
+	) AS total_count
+FROM
+	tb_recharge re
+	LEFT JOIN tb_building_room r ON re.room_id = r.id
+	LEFT JOIN tb_community_building b ON r.building_id = b.id
+	LEFT JOIN tb_unit_community c ON b.community_id = c.id
+	LEFT JOIN sys_user u ON u.user_id = c.user_id
+WHERE
+	u.user_id = #{userid}
+	LIMIT ${offset} , ${limit}
+    </select>
+</mapper>
